@@ -1,32 +1,58 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <keep-alive>
+      <transition :name="animate">
+        <router-view />
+      </transition>
+    </keep-alive>
   </div>
 </template>
 
+<script>
+export default {
+  name: "App",
+  data() {
+    return {
+      animate: "",
+    };
+  },
+  watch: {
+    $route(to, from) {
+      if (to.meta.tx > from.meta.tx) {
+        this.animate = "right";
+      } else {
+        this.animate = "left";
+      }
+    },
+  }
+};
+</script>
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  font-family: "helvetica neue", tahoma, "hiragino sans gb", stheiti,
+    "wenquanyi micro hei", \5fae\8f6f\96c5\9ed1, \5b8b\4f53, sans-serif;
+  color: #888;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.auto-img {
+  width: 100%;
+  display: block;
+}
+.right-enter-active,
+.right-leave-active,
+.left-enter-active,
+.left-leave-active {
+  transition: all 200ms;
+}
+.right-enter {
+  transform: translate3d(-100%, 0, 0);
+}
+.right-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+.left-enter {
+  transform: translate3d(100%, 0, 0);
+}
+.left-leave-to {
+  transform: translate3d(-100%, 0, 0);
 }
 </style>
